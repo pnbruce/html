@@ -1,15 +1,22 @@
 html {
-    font-family: 'Roboto Mono', monospace;
-    text-align: center;
-  }
+  font-family: 'Roboto Mono', monospace;
+  text-align: center;
+}
 
 a {
-    text-decoration:none;
+  text-decoration:none;
+}
+
+span {
+  white-space: pre-wrap;
+}
+
+a:hover {
+  color: gray;
 }
 
 body {
   margin: 0 auto;
   background-color: #FEFEFE;
   padding: 0 20px 20px 20px;
-  border: 5px solid black;
 }
