@@ -10,15 +10,23 @@ let boardListeners = [null, null, null, null, null, null, null, null, null,]
 updateBoard(xToMove, boardState, board, boardListeners)
 
 function updateBoard(xToMove, boardState, board, boardListeners) {
-    for (let i = 0; i < 9; i++) {
-        if(boardState[i] === 0) {
-            if(boardListeners[i] !== null) {
+    let winner = whoWon(boardState)
+    if ( !!winner == true) {
+        document.getElementById('title').textContent = (winner == 1 ? 'X' : 'O') + " wins!"
+        for (let i = 0; i < 9; i++) {
+            board[i].removeEventListener('click', boardListeners[i])
+        }
+    } else {
+        for (let i = 0; i < 9; i++) {
+            if(boardState[i] === 0) {
+                if(boardListeners[i] !== null) {
+                    board[i].removeEventListener('click', boardListeners[i])
+                }
+                boardListeners[i] = makePostionListener(i, xToMove, boardState, board, boardListeners)
+                board[i].addEventListener('click', boardListeners[i])
+            } else {
                 board[i].removeEventListener('click', boardListeners[i])
             }
-            boardListeners[i] = makePostionListener(i, xToMove, boardState, board, boardListeners)
-            board[i].addEventListener('click', boardListeners[i])
-        } else {
-            board[i].removeEventListener('click', boardListeners[i])
         }
     }
 }
@@ -27,7 +35,6 @@ function makePostionListener(i, xToMove, boardState, board, boardListeners) {
     function postionOnClick() {
         if(xToMove === true){
             board[i].textContent = '  X  '
-            document.getElementById('title').textContent = 'O to move'
             boardState[i] = 1
         } else {
             board[i].textContent = '  O  '
@@ -38,4 +45,36 @@ function makePostionListener(i, xToMove, boardState, board, boardListeners) {
         updateBoard(xToMove, boardState, board, boardListeners)
     }
     return postionOnClick
+}
+
+function whoWon(boardState) {
+    if(threeOfAKind(boardState[0], boardState[1], boardState[2])) {
+        return boardState[0]
+    }
+    if(threeOfAKind(boardState[3], boardState[4], boardState[5])) {
+        return boardState[3]
+    }
+    if(threeOfAKind(boardState[6], boardState[7], boardState[8])) {
+        return boardState[6]
+    }
+    if(threeOfAKind(boardState[0], boardState[3], boardState[6])) {
+        return boardState[0]
+    }
+    if(threeOfAKind(boardState[1], boardState[4], boardState[7])) {
+        return boardState[1]
+    }
+    if(threeOfAKind(boardState[2], boardState[5], boardState[8])) {
+        return boardState[2]
+    }
+    if(threeOfAKind(boardState[0], boardState[4], boardState[8])) {
+        return boardState[0]
+    }
+    if(threeOfAKind(boardState[2], boardState[4], boardState[6])) {
+        return boardState[2]
+    }
+    return 0;
+}
+
+function threeOfAKind(a, b, c) {
+    return a === b && a === c
 }
