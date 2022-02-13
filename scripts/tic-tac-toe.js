@@ -35,13 +35,15 @@ function makePostionListener(i, xToMove, boardState, board, boardListeners) {
     function postionOnClick() {
         if(xToMove === true){
             board[i].textContent = '  X  '
+
             boardState[i] = 1
         } else {
             board[i].textContent = '  O  '
-            document.getElementById('title').textContent = 'X to move'
+            
             boardState[i] = -1
         }
         xToMove = !xToMove
+        document.getElementById('title').textContent = (xToMove ? 'X' : 'O') + ' to move'
         updateBoard(xToMove, boardState, board, boardListeners)
     }
     return postionOnClick
